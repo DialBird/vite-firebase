@@ -12,7 +12,8 @@
   "dependencies": {
     "eslint-config-prettier": "^8.5.0",
     "pinia": "^2.0.11",
-    "vue": "^3.2.31"
+    "vue": "^3.2.31",
+    "vue-router": "4"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.1.0",

@@ -1,9 +1,8 @@
 <script lang="ts" setup>
+const msg = "hello";
 </script>
 
 <template>
-  <router-view></router-view>
+  <h1>Hello</h1>
+  <p>{{ msg }}</p>
 </template>
-
-<style>
-</style>
