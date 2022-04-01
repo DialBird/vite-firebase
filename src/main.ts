@@ -1,6 +1,7 @@
 import { firebaseAuth, firestoreDb } from "@/infra/firebase";
 import { setDb } from "@/infra/setFirebase";
 import { router } from "@/router";
+import "flowbite";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
 import App from "./App.vue";
