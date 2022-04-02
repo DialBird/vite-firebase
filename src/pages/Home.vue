@@ -4,5 +4,5 @@ const msg = "hello";
 
 <template>
   <h1>Hello</h1>
-  <p>{{ msg }}</p>
+  <router-link :to="{ name: 'About' }">About</router-link>
 </template>
