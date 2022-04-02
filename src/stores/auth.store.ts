@@ -51,7 +51,7 @@ export const useAuthStore = defineStore("auth", {
       return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(getAuth(), email, password)
           .then(async (res) => {
-            await createUser({ username, email });
+            await createUser({ email, uid: res.user.uid, username });
             this.currentUser = res.user;
             resolve(res);
           })

@@ -1,5 +1,6 @@
+import { User, userConverter } from "@/domain/entities/User";
 import { getFirestore } from "@/infra/setFirebase";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 
 export const getUsers = async () => {
   const collectionRef = collection(getFirestore(), "users");
@@ -7,19 +8,30 @@ export const getUsers = async () => {
   return response.docs.map((doc) => doc.data());
 };
 
+export const getUser = async (uid: string): Promise<User | undefined> => {
+  const docRef = doc(getFirestore(), `users/${uid}`).withConverter(
+    userConverter
+  );
+  const response = await getDoc(docRef);
+  return response.data();
+};
+
 export const createUser = async ({
-  username,
   email,
+  uid,
+  username,
 }: {
-  username: string;
   email: string;
+  uid: string;
+  username: string;
 }) => {
-  const collectionRef = collection(getFirestore(), "users");
-  return await addDoc(collectionRef, {
-    username,
+  const docRef = doc(getFirestore(), `users/${uid}`);
+  return await setDoc(docRef, {
     email,
+    uid,
+    username,
   });
 };
 
-export const updateUser = () => {}
-export const deleteUser = () => {}
+export const updateUser = (uid: string) => {};
+export const deleteUser = () => {};
