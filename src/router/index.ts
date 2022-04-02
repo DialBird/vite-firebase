@@ -4,6 +4,7 @@ import Home from "@/pages/Home.vue";
 import LayoutDashboard from "@/pages/LayoutDashboard.vue";
 import Login from "@/pages/Login.vue";
 import Settings from "@/pages/PageSettings.vue";
+import Snaps from "@/pages/PageSnaps.vue";
 import Signup from "@/pages/Signup.vue";
 import { useAuthStore } from "@/stores/auth.store";
 import { createRouter, createWebHistory } from "vue-router";
@@ -30,6 +31,11 @@ const routes = [
         path: "about",
         name: "About",
         component: About,
+      },
+      {
+        path: "snaps",
+        name: "Snaps",
+        component: Snaps,
       },
       {
         path: "settings",
