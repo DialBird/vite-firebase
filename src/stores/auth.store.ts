@@ -2,7 +2,11 @@ import { getAuth } from "@/infra/setFirebase";
 import type { User } from "firebase/auth";
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
 } from "firebase/auth";
 import { defineStore } from "pinia";
 
@@ -24,6 +28,16 @@ export const useAuthStore = defineStore("auth", {
         );
       });
     },
+    login(email: string, password: string) {
+      return new Promise((resolve, reject) => {
+        signInWithEmailAndPassword(getAuth(), email, password)
+          .then((res) => {
+            this.currentUser = res.user;
+            resolve(res);
+          })
+          .catch(reject);
+      });
+    },
     register(email: string, password: string) {
       return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(getAuth(), email, password)
@@ -32,6 +46,22 @@ export const useAuthStore = defineStore("auth", {
             resolve(res);
           })
           .catch(reject);
+      });
+    },
+    registerWithGoogle() {
+      return new Promise((resolve, reject) => {
+        const googleProvider = new GoogleAuthProvider();
+        signInWithPopup(getAuth(), googleProvider)
+          .then((res) => {
+            this.currentUser = res.user;
+            resolve(res);
+          })
+          .catch(reject);
+      });
+    },
+    signOut() {
+      return new Promise((resolve, reject) => {
+        signOut(getAuth()).then(resolve).catch(reject);
       });
     },
   },

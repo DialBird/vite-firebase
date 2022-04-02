@@ -1,12 +1,14 @@
 import About from "@/pages/About.vue";
+import Dashboard from "@/pages/Dashboard.vue";
 import Home from "@/pages/Home.vue";
+import LayoutDashboard from "@/pages/LayoutDashboard.vue";
 import Login from "@/pages/Login.vue";
 import Signup from "@/pages/Signup.vue";
 import { useAuthStore } from "@/stores/auth.store";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
-  { path: "/", name: "Home", component: Home },
+  { path: "/", name: "Home", component: Home, meta: { opened: true } },
   { path: "/login", name: "Login", component: Login, meta: { opened: true } },
   {
     path: "/signup",
@@ -14,7 +16,22 @@ const routes = [
     component: Signup,
     meta: { opened: true },
   },
-  { path: "/about", name: "About", component: About },
+  {
+    path: "/dashboard",
+    component: LayoutDashboard,
+    children: [
+      {
+        path: "",
+        name: "Dashboard",
+        component: Dashboard,
+      },
+      {
+        path: "about",
+        name: "About",
+        component: About,
+      },
+    ],
+  },
 ];
 
 export const router = createRouter({
