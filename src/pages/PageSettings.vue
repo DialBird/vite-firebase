@@ -1,16 +1,28 @@
 <script lang="ts" setup>
+import { updateUser } from "@/infra/firestore/user";
+import {useAlertStore} from "@/stores/alert.store";
 import { useUserStore } from "@/stores/user.store";
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
+const alertStore = useAlertStore()
 const userStore = useUserStore();
 
 const { user } = storeToRefs(userStore);
 
 const username = ref(user.value?.username);
-const handleSubmit = () => {
-  
+
+const handleSubmit = async () => {
+  if (!user.value) return;
+
+  await updateUser(user.value.uid, { username: username.value }).then(() => {
+    alertStore.setAlert('updated!!', 'success')
+  });
 };
+
+watch(user, (val) => {
+  username.value = val?.username;
+});
 </script>
 
 <template>

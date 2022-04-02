@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@vueuse/core": "^8.2.3",
     "eslint-config-prettier": "^8.5.0",
     "firebase": "^9.6.10",
     "flowbite": "^1.4.1",

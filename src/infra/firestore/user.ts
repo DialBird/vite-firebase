@@ -1,6 +1,6 @@
 import { User, userConverter } from "@/domain/entities/User";
 import { getFirestore } from "@/infra/setFirebase";
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { doc, getDoc, getDocs, setDoc, Timestamp } from "firebase/firestore";
 
 export const getUsers = async () => {
   const collectionRef = collection(getFirestore(), "users");
@@ -33,5 +33,16 @@ export const createUser = async ({
   });
 };
 
-export const updateUser = (uid: string) => {};
+export const updateUser = async (uid: string, partial: Partial<User>) => {
+  const docRef = doc(getFirestore(), `users/${uid}`);
+  const now = Timestamp.now();
+  await setDoc(
+    docRef,
+    {
+      ...partial,
+      updatedAt: now,
+    },
+    { merge: true }
+  );
+};
 export const deleteUser = () => {};
