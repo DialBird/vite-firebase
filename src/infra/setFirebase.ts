@@ -9,7 +9,7 @@ export function setDb(_db: Firestore, _auth: Auth) {
   auth = _auth;
 }
 
-export function getDB(): Firestore {
+export function getFirestore(): Firestore {
   return db;
 }
 

@@ -1,4 +1,4 @@
-import { getAuth } from "@/infra/setFirebase";
+import { getAuth, getFirestore } from "@/infra/setFirebase";
 import type { User } from "firebase/auth";
 import {
   createUserWithEmailAndPassword,
@@ -8,6 +8,7 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
 import { defineStore } from "pinia";
 
 export const useAuthStore = defineStore("auth", {
@@ -38,10 +39,23 @@ export const useAuthStore = defineStore("auth", {
           .catch(reject);
       });
     },
-    register(email: string, password: string) {
+    register({
+      email,
+      password,
+      username,
+    }: {
+      email: string;
+      password: string;
+      username: string;
+    }) {
       return new Promise((resolve, reject) => {
         createUserWithEmailAndPassword(getAuth(), email, password)
-          .then((res) => {
+          .then(async (res) => {
+            const collectionRef = collection(getFirestore(), "users");
+            await addDoc(collectionRef, {
+              username,
+              email,
+            });
             this.currentUser = res.user;
             resolve(res);
           })

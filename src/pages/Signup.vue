@@ -1,15 +1,19 @@
 <script lang="ts" setup>
 import { router } from "@/router";
 import { useAuthStore } from "@/stores/auth.store";
-import { ref } from "vue";
+import { reactive } from "vue";
 
 const authStore = useAuthStore();
 
-const email = ref("");
-const password = ref("");
+const formData = reactive({
+  email: "",
+  password: "",
+  username: "",
+});
 
 const handleSubmit = () => {
-  authStore.register(email.value, password.value).then(async () => {
+  const { email, username, password } = formData;
+  authStore.register({ username, email, password }).then(async () => {
     await router.push({ name: "About" });
   });
 };
@@ -29,12 +33,26 @@ const handleSubmitGoogle = () => {
       <div class="mb-6">
         <label
           class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          for="name"
+          >Your name</label
+        >
+        <input
+          id="name"
+          v-model="formData.username"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Tarou"
+          required
+        />
+      </div>
+      <div class="mb-6">
+        <label
+          class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
           for="email"
           >Your email</label
         >
         <input
           id="email"
-          v-model="email"
+          v-model="formData.email"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="name@flowbite.com"
           required
@@ -49,7 +67,7 @@ const handleSubmitGoogle = () => {
         >
         <input
           id="password"
-          v-model="password"
+          v-model="formData.password"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           required
           type="password"
