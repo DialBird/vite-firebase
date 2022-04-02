@@ -7,5 +7,20 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require("flowbite/plugin")],
+  plugins: [
+    require("flowbite/plugin"),
+    require("tailwindcss/plugin")(({ addBase, theme }) => {
+      addBase({
+        h1: {
+          fontSize: theme("fontSize.2xl"),
+          fontWeight: theme("fontWeight.bold"),
+        },
+        h2: {
+          fontSize: theme("fontSize.xl"),
+          fontWeight: theme("fontWeight.bold"),
+        },
+        h3: { fontSize: theme("fontSize.lg") },
+      });
+    }),
+  ],
 };

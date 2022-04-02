@@ -1,4 +1,4 @@
-import { firebaseAuth, firestoreDb } from "@/infra/firebase";
+import { firebaseAuth, firebaseStorage, firestoreDb } from "@/infra/firebase";
 import { setDb } from "@/infra/setFirebase";
 import { router } from "@/router";
 import "flowbite";
@@ -7,7 +7,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import "./index.css";
 
-setDb(firestoreDb, firebaseAuth);
+setDb({ _db: firestoreDb, _auth: firebaseAuth, _storage: firebaseStorage });
 
 const app = createApp(App);
 
