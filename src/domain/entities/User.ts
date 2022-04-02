@@ -10,19 +10,23 @@ export class User {
   readonly email: string;
   readonly uid: string;
   readonly username: string;
+  readonly profileUrl?: string;
 
   constructor({
     email,
     uid,
     username,
+    profileUrl,
   }: {
     email: string;
     uid: string;
     username: string;
+    profileUrl?: string;
   }) {
     this.email = email;
     this.uid = uid;
     this.username = username;
+    this.profileUrl = profileUrl;
   }
 }
 

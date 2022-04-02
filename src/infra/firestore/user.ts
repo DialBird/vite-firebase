@@ -1,6 +1,13 @@
 import { User, userConverter } from "@/domain/entities/User";
 import { getFirestore } from "@/infra/setFirebase";
-import { doc, getDoc, getDocs, setDoc, Timestamp } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  Timestamp,
+} from "firebase/firestore";
 
 export const getUsers = async () => {
   const collectionRef = collection(getFirestore(), "users");
