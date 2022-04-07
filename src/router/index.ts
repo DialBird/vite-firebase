@@ -4,6 +4,7 @@ import Home from "@/pages/Home.vue";
 import LayoutDashboard from "@/pages/LayoutDashboard.vue";
 import Login from "@/pages/Login.vue";
 import Chat from "@/pages/PageChat.vue";
+import PageNotFound from "@/pages/PageNotFound.vue";
 import Settings from "@/pages/PageSettings.vue";
 import Signup from "@/pages/Signup.vue";
 import { useAuthStore } from "@/stores/auth.store";
@@ -44,6 +45,7 @@ const routes = [
       },
     ],
   },
+  { path: "/:pathMatch(.*)*", name: "NotFound", component: PageNotFound },
 ];
 
 export const router = createRouter({
