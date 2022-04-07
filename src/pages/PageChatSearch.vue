@@ -2,6 +2,7 @@
 import type { Message } from "@/domain/entities/Message";
 import { queryMessageWithUid } from "@/infra/firestore/message";
 import { useChatStore } from "@/stores/chat.store";
+import algoliasearch from "algoliasearch";
 import { storeToRefs } from "pinia";
 import { ref, watch } from "vue";
 
@@ -11,6 +12,11 @@ const { messages } = storeToRefs(chatStore);
 const searchInput = ref("");
 
 const filteredMessages = ref<Message[]>(messages.value);
+
+const searchClient = algoliasearch(
+  import.meta.env.VITE_ALGOLIA_API_KEY as string,
+  import.meta.env.VITE_ALGOLIA_SECRET_KEY as string
+);
 
 watch(searchInput, async (val) => {
   if (val === "") {
@@ -25,6 +31,14 @@ watch(searchInput, async (val) => {
   <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
     <div class="p-4">
       <label class="sr-only" for="table-search">Search</label>
+      <AisInstantSearch :search-client="searchClient" index-name="firestore">
+        <ais-search-box class="searchbox" placeholder="Search here…" />
+        <ais-hits>
+          <template v-slot="{ items }">
+            <p v-for="item in items" :key="item.objectID">{{ item.content }}</p>
+          </template>
+        </ais-hits>
+      </AisInstantSearch>
       <div class="relative mt-1">
         <div
           class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
