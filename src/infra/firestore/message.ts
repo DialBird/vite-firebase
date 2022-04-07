@@ -3,6 +3,7 @@ import { getFirestore } from "@/infra/setFirebase";
 import { KeyGenerator } from "@/utils/KeyGenerator";
 import type {
   FirestoreError,
+  Query,
   QuerySnapshot,
   Unsubscribe,
 } from "firebase/firestore";
@@ -12,8 +13,10 @@ import {
   doc,
   getDocs,
   onSnapshot,
+  query,
   setDoc,
   Timestamp,
+  where,
 } from "firebase/firestore";
 
 export const getMessages = async () => {
@@ -37,6 +40,15 @@ export const subscribeMessages = (
     },
     reject
   );
+};
+
+export const queryMessageWithUid = async (queryString: string): Promise<Message[]> => {
+  const collectionRef = collection(getFirestore(), "messages").withConverter(
+    messageConverter
+  );
+  const q = query(collectionRef, where("uid", "==", queryString));
+  const response = await getDocs(q);
+  return response.docs.map((doc) => doc.data());
 };
 
 export const createMessage = async (

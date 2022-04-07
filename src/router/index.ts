@@ -4,6 +4,8 @@ import Home from "@/pages/Home.vue";
 import LayoutDashboard from "@/pages/LayoutDashboard.vue";
 import Login from "@/pages/Login.vue";
 import Chat from "@/pages/PageChat.vue";
+import PageChatRoot from "@/pages/PageChatRoot.vue";
+import ChatSearch from "@/pages/PageChatSearch.vue";
 import PageNotFound from "@/pages/PageNotFound.vue";
 import Settings from "@/pages/PageSettings.vue";
 import Signup from "@/pages/Signup.vue";
@@ -35,8 +37,19 @@ const routes = [
       },
       {
         path: "chat",
-        name: "Chat",
-        component: Chat,
+        component: PageChatRoot,
+        children: [
+          {
+            path: "",
+            name: "Chat",
+            component: Chat,
+          },
+          {
+            path: "search",
+            name: "ChatSearch",
+            component: ChatSearch,
+          },
+        ],
       },
       {
         path: "settings",

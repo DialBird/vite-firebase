@@ -1,14 +1,9 @@
 <script lang="ts" setup>
-import {
-  createMessage,
-  deleteMessage,
-  subscribeMessages,
-} from "@/infra/firestore/message";
+import { createMessage, deleteMessage } from "@/infra/firestore/message";
 import { useAuthStore } from "@/stores/auth.store";
 import { useChatStore } from "@/stores/chat.store";
-import type { Unsubscribe } from "firebase/firestore";
 import { storeToRefs } from "pinia";
-import { onMounted, onUnmounted, ref } from "vue";
+import { ref } from "vue";
 
 const authStore = useAuthStore();
 const chatStore = useChatStore();
@@ -16,7 +11,7 @@ const chatStore = useChatStore();
 const { currentUser } = storeToRefs(authStore);
 const { messages } = storeToRefs(chatStore);
 
-const messageInput = ref('')
+const messageInput = ref("");
 
 const onClick = () => {
   if (!currentUser.value || !messageInput.value) return;
@@ -30,28 +25,12 @@ const onClick = () => {
 const onClickDelete = (messageUid: string) => {
   deleteMessage(messageUid);
 };
-
-const removeListener = ref<Unsubscribe>(() => {});
-
-onMounted(() => {
-  removeListener.value = subscribeMessages(
-    (data) => {
-      chatStore.setMessages(data);
-    },
-    (err) => {
-      console.error(err);
-    }
-  );
-});
-
-onUnmounted(() => {
-  removeListener.value();
-});
 </script>
 
 <template>
   <div class="container mx-auto">
     <h1 class="my-4">Chat</h1>
+    <router-link :to="{ name: 'ChatSearch' }">search</router-link>
     <ul>
       <li v-for="message in messages" :key="message.uid" class="mb-4 ml-6">
         <div
