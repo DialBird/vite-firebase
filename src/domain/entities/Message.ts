@@ -9,22 +9,22 @@ import type {
 export class Message {
   readonly uid: string;
   readonly content: string;
-  readonly from: string;
+  readonly fromUid: string;
   readonly createdAt: Date;
 
   constructor({
     uid,
-    from,
+    fromUid,
     content,
     createdAt,
   }: {
     uid: string;
-    from: string;
+    fromUid: string;
     content: string;
     createdAt: Date;
   }) {
     this.uid = uid;
-    this.from = from;
+    this.fromUid = fromUid;
     this.content = content;
     this.createdAt = createdAt;
   }
@@ -36,7 +36,7 @@ export function assertMessage(data: DocumentData): asserts data is Message {
     !(
       typeof d?.uid === "string" &&
       typeof d?.content === "string" &&
-      typeof d?.from === "string" &&
+      typeof d?.fromUid === "string" &&
       typeof data.createdAt?.toDate === "function"
     )
   ) {

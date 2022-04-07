@@ -12,4 +12,12 @@ module.exports = {
   "env": {
     "vue/setup-compiler-macros": true
   },
+  "rules": {
+    '@typescript-eslint/no-empty-function': [
+      'error',
+      {
+        allow: ['arrowFunctions'], // () => {} のみ許可
+      },
+    ],
+  },
 }

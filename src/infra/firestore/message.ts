@@ -1,10 +1,18 @@
 import { Message, messageConverter } from "@/domain/entities/Message";
 import { getFirestore } from "@/infra/setFirebase";
+import { KeyGenerator } from "@/utils/KeyGenerator";
+import type {
+  FirestoreError,
+  QuerySnapshot,
+  Unsubscribe,
+} from "firebase/firestore";
 import {
-  addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   onSnapshot,
+  setDoc,
   Timestamp,
 } from "firebase/firestore";
 
@@ -14,22 +22,38 @@ export const getMessages = async () => {
   return response.docs.map((doc) => doc.data());
 };
 
-export const ons = (): Promise<Message[]> => {
+export const subscribeMessages = (
+  resolve: (d: Message[]) => void,
+  reject: (error: FirestoreError) => void
+): Unsubscribe => {
   const collectionRef = collection(getFirestore(), "messages").withConverter(
     messageConverter
   );
-  return new Promise((resolve, reject) => {
-    onSnapshot(collectionRef, (data) => {
+
+  return onSnapshot(
+    collectionRef,
+    (data: QuerySnapshot<Message>) => {
       resolve(data.docs.map((d) => d.data()));
-    }, reject);
+    },
+    reject
+  );
+};
+
+export const createMessage = async (
+  data: Omit<Message, "uid" | "createdAt">
+) => {
+  const uid = KeyGenerator.generateUid();
+  const docRef = doc(getFirestore(), `messages/${uid}`).withConverter(
+    messageConverter
+  );
+  return await setDoc(docRef, {
+    ...data,
+    uid,
+    createdAt: Timestamp.now(),
   });
 };
 
-export const createMessage = async (data: Omit<Message, "createdAt">) => {
-  const collectionRef = collection(getFirestore(), "messages").withConverter(
-    messageConverter
-  );
-  return await addDoc(collectionRef, { ...data, createdAt: Timestamp.now() });
+export const deleteMessage = async (uid: string): Promise<void> => {
+  const docRef = doc(getFirestore(), `messages/${uid}`);
+  return await deleteDoc(docRef);
 };
-
-export const deleteMessage = async ()
