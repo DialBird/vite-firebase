@@ -8,6 +8,7 @@ import PageChatRoot from "@/pages/PageChatRoot.vue";
 import ChatSearch from "@/pages/PageChatSearch.vue";
 import PageNotFound from "@/pages/PageNotFound.vue";
 import Settings from "@/pages/PageSettings.vue";
+import Transaction from "@/pages/PageTransaction.vue";
 import Signup from "@/pages/Signup.vue";
 import { useAuthStore } from "@/stores/auth.store";
 import { createRouter, createWebHistory } from "vue-router";
@@ -55,6 +56,11 @@ const routes = [
         path: "settings",
         name: "Settings",
         component: Settings,
+      },
+      {
+        path: "transaction",
+        name: "Transaction",
+        component: Transaction,
       },
     ],
   },
